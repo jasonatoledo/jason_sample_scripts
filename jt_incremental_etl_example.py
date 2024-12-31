@@ -121,8 +121,8 @@ def fetch_source_table_incremental(target_date, table_name):
             break
 
         print(f"Fetched {len(data)} rows for table: {table_name}")
-        transform(data, col_names, table_name, target_date)  # Step 3: Transform data
-        move_to_aws_s3(target_date, table_name)  # Step 4: Move data to S3
+        transform(data, col_names, table_name, target_date)
+        move_to_aws_s3(target_date, table_name)
 
         total_rows += len(data)
 
