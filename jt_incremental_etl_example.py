@@ -1,7 +1,7 @@
 import pandas as pd
 import psycopg2
 import boto3
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 import time
 import os,sys,inspect
 import logging
@@ -235,7 +235,7 @@ def main():
         logging.info(f"Starting ETL process at {start_time_utc}")
 
         # create target date and query list
-        target_date = str(date.today() - timedelta(0))
+        target_date = str(date.today())
         TABLES = ["incremental_table1","incremental_table2"]
 
         # Iterate over tables in QUERYLIST
