@@ -8,6 +8,7 @@ import logging
 from datetime import datetime
 from collections import Counter
 
+# create logger
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -41,6 +42,7 @@ payment_status_codes = {
 s3 = boto3.client('s3')
 redshift = boto3.client('redshift-data')  # Ensure you have necessary permissions
 
+
 def lambda_handler(event, context):
     """
     AWS Lambda entry point.
@@ -66,6 +68,7 @@ def lambda_handler(event, context):
         "body": "Processing completed successfully."
     }
 
+
 def extract_file_content_from_event(event):
     """
     Extracts the file content from the S3 PUT event.
@@ -90,6 +93,7 @@ def extract_file_content_from_event(event):
         print(f"Error extracting file content: {e}")
         raise
 
+
 def generate_snake_case_variables(data_dict):
     """
     Converts dictionary keys to snake_case and assigns them as global variables.
@@ -105,6 +109,7 @@ def generate_snake_case_variables(data_dict):
         globals()[snake_case_key] = value  # Dynamically assign the variable
         snake_case_vars[snake_case_key] = value  # Save for debugging or verification
 
+
 def clean_keys(dirty_data):
     """Recursively remove @ symbols from keys in a dictionary."""
     if isinstance(dirty_data, dict):
@@ -117,6 +122,7 @@ def clean_keys(dirty_data):
         return [clean_keys(item) for item in dirty_data]  # Process lists recursively
     else:
         return dirty_data  # Return as is for base types
+
 
 def preprocess_and_parse_xml(xml_content):
     try:
@@ -140,7 +146,6 @@ def preprocess_and_parse_xml(xml_content):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-
 
 
 # create and display the snapshot dicitonary
@@ -191,6 +196,7 @@ def create_and_display_snapshot(parsed_data):
 
     return snapshot_dict
 
+
 def split_objects_by_keys(parsed_data, keys_to_split):
     """
     Split a dictionary into sub-dictionaries based on specific prefixes in the keys.
@@ -215,6 +221,7 @@ def split_objects_by_keys(parsed_data, keys_to_split):
                 split_objects[split_key][cleaned_key] = value  # Add the cleaned key-value pair
 
     return split_objects
+
 
 def process_truelink_data(parsed_data):
     """
@@ -254,6 +261,7 @@ def process_truelink_data(parsed_data):
         big_dict['SB168Frozen'] = bureaus_dict
       
     return big_dict
+
 
 def extract_user_info(big_dict):
     """Extract user-related information like name, address, age, etc."""
@@ -304,6 +312,7 @@ def extract_user_info(big_dict):
         users_age = None
       
     return inquiry_date, username, days_current_address, num_previous_addresses, users_age    
+
 
 def extract_employers(big_dict):
     """
@@ -434,20 +443,17 @@ def parse_messages(big_dict):
 
     return dict(message_symbols)
 
-def prepare_output_data(**kwargs):
-    """Prepare the output JSON data."""
-    return {key: value for key, value in kwargs.items()}    
 
-# Example Integration
 def process_and_generate_variables(snapshot_dict):
     """
-    Process snapshot and big_dict to generate snake_case variables and handle errors.
+    Process snapshot to generate snake_case variables and handle errors.
     
     Args:
         snapshot_dict (dict): Snapshot data dictionary.
         big_dict (dict): Main dictionary containing parsed data.
     """
     generate_snake_case_variables(snapshot_dict)
+
 
 def process_tradeline_partition(big_dict):
     """
@@ -548,7 +554,6 @@ def upload_to_s3(file_path, bucket_name, s3_key):
         print(f"Uploaded {file_path} to s3://{bucket_name}/{s3_key}")
     except Exception as e:
         print(f"Failed to upload {file_path} to S3. Error: {e}")
-
 
 def run_event(event):
     """
