@@ -83,7 +83,7 @@ def extract_file_content_from_event(event):
         # Extract bucket and key from the event
         bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
         object_key = event["Records"][0]["s3"]["object"]["key"]
-        print(f"Processing file from bucket: {bucket_name}, key: {object_key}")
+        logger.info(f"Processing file from bucket: {bucket_name}, key: {object_key}")
 
         # Get file content from S3
         response = s3.get_object(Bucket=bucket_name, Key=object_key)
