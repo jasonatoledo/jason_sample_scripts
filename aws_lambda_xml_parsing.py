@@ -8,6 +8,9 @@ import logging
 from datetime import datetime
 from collections import Counter
 
+with open ('s3_secrets.json', 'r') as f:
+    s3_secrets = json.load(f)
+
 # create logger
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -676,8 +679,8 @@ def run_event(event):
                 return
 
             # Upload to S3
-            bucket_name = "tomo-xml-cr-bucket-output"
-            s3_key = f"test-output-folder1/{filename}.json"
+            bucket_name = "%s" % bucket
+            s3_key = ("{}/{}.json".format(bucket, filename))
             upload_to_s3(file_path, bucket_name, s3_key)   
 
         else:
