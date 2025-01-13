@@ -680,7 +680,7 @@ def run_event(event):
 
             # Upload to S3
             bucket_name = "%s" % bucket
-            s3_key = ("{}/{}.json".format(bucket, filename))
+            s3_key = ("{}{}.json".format(key, filename))
             upload_to_s3(file_path, bucket_name, s3_key)   
 
         else:
