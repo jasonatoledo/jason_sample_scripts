@@ -3,10 +3,11 @@
     config(
         materialized='table'
         , tags=["payment_platform", "invoices","fivetran"]
-        , schema='dbt_invoicese'
+        , schema='dbt_invoices'
         , pre_hook="begin transaction;
             grant select on all tables in schema fivetran_invoices to group dbt_users;"
-        , post_hook="commit; grant select on {{ this }} to looker;
+        , post_hook="commit; 
+                     grant select on {{ this }} to looker;
                      grant select on {{ this }} to group dbt_users;"
     ) 
 }}
