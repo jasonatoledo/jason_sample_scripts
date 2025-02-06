@@ -12,7 +12,7 @@ conn = redshift_connector.connect(
     password="password"
 )
 
-# create cursor
+# create cursor object
 cur = conn.cursor()
 
 # execute query
@@ -52,13 +52,13 @@ slack_bot_token = "token_token"
 # Initialize the Slack client
 client = WebClient(token=slack_bot_token)
 
-# define expected
+# define expected and goals (fictional values)
 expected = "1,000,000" if int(count) >= 5,000 else "500,000"
 goal_1 = "550,000"
 goal_2 = "1,100,000"
 
-# Specify the channel and message
-channel_id = "#alerts-channel-911"  # Replace with your Slack channel name or ID
+# Specify the slack channel and message
+channel_id = "#alerts-channel-911"
 message_text = f"""
 <*@here*>
 *{day_of_week}* *{previous_day}* *Recurring* *Revenue* *updates*:
